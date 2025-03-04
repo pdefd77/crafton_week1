@@ -17,6 +17,10 @@ public class pdefd77_BoardCheck : MonoBehaviour
         {
             for (int j = 0; j < 7; j++)
             {
+                Debug.Log(i);
+                Debug.Log(j);
+                Debug.Log(arr[i, j]);
+                Debug.Log("W");
                 if (i != 0 && i != 6 && j != 0 && j != 6) continue;
 
                 int val = dfs(i, j, 0, 0);
@@ -29,10 +33,13 @@ public class pdefd77_BoardCheck : MonoBehaviour
         }
     }
 
+    //위 1 오른쪽 2 아래 4 왼쪽 8
     private int dfs(int y, int x, int prev, int len)
     {
+
         if (prev != 1 && y < 6 && (arr[y, x] & 4) > 0 && (arr[y + 1, x] & 1) > 0)
         {
+            Debug.Log("GOOD");
             if (y + 1 == 6)
             {
                 return len;
@@ -43,7 +50,7 @@ public class pdefd77_BoardCheck : MonoBehaviour
             }
         }
 
-        if (prev != 2 && x < 6 && (arr[y, x] & 8) > 0 && (arr[y, x - 1] & 2) > 0)
+        if (prev != 2 && x > 0 && (arr[y, x] & 8) > 0 && (arr[y, x - 1] & 2) > 0)
         {
             if (x - 1 == 0)
             {
@@ -67,7 +74,7 @@ public class pdefd77_BoardCheck : MonoBehaviour
             }
         }
 
-        if (prev != 8 && x > 0 && (arr[y, x] & 2) > 0 && (arr[y, x + 1] & 8) > 0)
+        if (prev != 8 && x <6 && (arr[y, x] & 2) > 0 && (arr[y, x + 1] & 8) > 0)
         {
             if (x + 1 == 6)
             {
