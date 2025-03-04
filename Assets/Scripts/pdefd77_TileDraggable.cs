@@ -42,7 +42,7 @@ public class pdefd77_TileDraggable : MonoBehaviour, IBeginDragHandler, IDragHand
         canvasGroup.alpha = 1.0f;
         canvasGroup.blocksRaycasts = true;
 
-        if (transform.parent == canvas || transform.parent.tag == "Inventory" || transform.parent.childCount > 1)
+        if (transform.parent == canvas || transform.parent.childCount > 1)
         {
             transform.SetParent(previousParent);
             rect.position = previousParent.GetComponent<RectTransform>().position;
@@ -51,6 +51,8 @@ public class pdefd77_TileDraggable : MonoBehaviour, IBeginDragHandler, IDragHand
         {
             int idx = transform.parent.GetComponent<pdefd77_BoardSlot>().getIdx();
             pdefd77_BoardCheck.arr[idx / 10, idx % 10] = tileType;
+            tileGenerator = GameObject.Find("TileGenerator");
+            tileGenerator.GetComponent<pdefd77_BoardCheck>().displayedTileCount += 1;
             tileDraggable.enabled = false;
 
             tileGenerator.GetComponent<pdefd77_TileGenerator>().minusTileCount();
