@@ -46,15 +46,12 @@ public class BoardCheck : MonoBehaviour
 
                 if (val > 0)
                 {
+                    getScore(val);
                     if (displayedTileCount >= 25)
                     {
                         gameOverTxt.text = "Your Score is " + score;
+                        gameOverTxt.gameObject.SetActive(true);
                     }
-
-                    //gameOverTxt.gameObject.SetActive(true);
-                    //gameOverTxt.text = "Your length is " + val;
-
-                    getScore(val);
                 }
             }
         }
