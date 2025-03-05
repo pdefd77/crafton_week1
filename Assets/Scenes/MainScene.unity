@@ -537,7 +537,11 @@ MonoBehaviour:
   InventorySlot1: {fileID: 1368387046}
   InventorySlot2: {fileID: 1612394814}
   InventorySlot3: {fileID: 211975258}
+<<<<<<< Updated upstream
   Tile: {fileID: 5751471162977674497, guid: dfdc19b1bb8e1ef4ba28c7f054bc974c, type: 3}
+=======
+  Tile: {fileID: 1524532430343431260, guid: 732c7929ee2f712428f543ecf58e76b5, type: 3}
+>>>>>>> Stashed changes
 --- !u!4 &291107838
 Transform:
   m_ObjectHideFlags: 0
