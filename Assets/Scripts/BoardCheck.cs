@@ -11,6 +11,8 @@ public class BoardCheck : MonoBehaviour
     [SerializeField]
     private GameObject[] boardSlot;
     [SerializeField]
+    private TurnCounting turnCounting;
+    [SerializeField]
     private TextMeshProUGUI scoreTxt;
     [SerializeField]
     private TextMeshProUGUI gameOverTxt;
@@ -85,9 +87,9 @@ public class BoardCheck : MonoBehaviour
         }
 
         //턴 증가
-        TurnCounting.Instance.turnCount++;
+        turnCounting.turnCount++;
         //턴에 해당하는 점수 충족 여부 확인 및 게임 종료 결정
-        TurnCounting.Instance.CheckTrunAndGoal();
+        turnCounting.CheckTrunAndGoal();
 
         if (displayedTileCount >= 25) // gameover
         {

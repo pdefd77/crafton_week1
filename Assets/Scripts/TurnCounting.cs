@@ -4,9 +4,6 @@ using UnityEngine.SceneManagement;
 
 public class TurnCounting : MonoBehaviour
 {
-    //싱글톤패턴
-    public static TurnCounting Instance;
-
     [SerializeField]
     LevelUpEffect levelUpEffect;
     public int turnCount;
@@ -23,17 +20,7 @@ public class TurnCounting : MonoBehaviour
 
     private void Awake()
     {
-        // 싱글톤 적용
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject); // 씬 변경 시 삭제되지 않도록 설정
-            SceneManager.sceneLoaded += OnSceneLoaded;
-        }
-        else
-        {
-            Destroy(gameObject); // 중복 방지
-        }
+        SceneManager.sceneLoaded += OnSceneLoaded;
 
         firstLimitTurn = limitTurn;
         firstGoalScore = goalScore;
@@ -55,6 +42,11 @@ public class TurnCounting : MonoBehaviour
         AssignUIElements(); // 텍스트누락방지 요소 할당
         ResetVariables(); // 변수를 기본값으로 초기화
         UpdateText();
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     // 변수 초기화 메서드
