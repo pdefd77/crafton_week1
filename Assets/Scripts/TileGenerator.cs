@@ -9,25 +9,15 @@ public enum Colors { WHITE, RED, MAGENTA, YELLOW };
 public class TileGenerator : MonoBehaviour
 {
     [SerializeField]
-    private Transform InventorySlot1;
+    private Transform inventorySlot1;
     [SerializeField]
-    private Transform InventorySlot2;
+    private Transform inventorySlot2;
     [SerializeField]
-    private Transform InventorySlot3;
+    private Transform inventorySlot3;
     [SerializeField]
-    private GameObject Tile;
-
-    public Toggle RerollToggle;
-    public Image RerollBackground;
-    public int RerollCount;
+    private GameObject tile;
 
     private int tileCount = 0;
-
-    private void Start()
-    {
-        RerollToggle.onValueChanged.AddListener(Reroll);
-        RerollCount = 3;
-    }
 
     private void Update()
     {
@@ -36,50 +26,23 @@ public class TileGenerator : MonoBehaviour
             Generate();
         }
     }
-    public void Reroll(bool isOn)
+    public void Reroll()
     {
-        if (RerollCount == 0)
-        {
-            SoundManager.Instance.PlayForbidSound();
-        }
-        else if (RerollCount == 1)
-        {
-            SoundManager.Instance.PlayDisplaySound();
-            RerollCount--;
+        DeleteTile(inventorySlot1);
+        DeleteTile(inventorySlot2);
+        DeleteTile(inventorySlot3);
 
-            DeleteTile(InventorySlot1);
-            DeleteTile(InventorySlot2);
-            DeleteTile(InventorySlot3);
-
-            Generate();
-
-            RerollBackground.color = Color.red;
-        }
-        else
-        {
-            SoundManager.Instance.PlayDisplaySound();
-            RerollCount--;
-
-            DeleteTile(InventorySlot1);
-            DeleteTile(InventorySlot2);
-            DeleteTile(InventorySlot3);
-
-            Generate();
-        }
+        Generate();
     }
 
 
     private void DeleteTile(Transform slot)
     {
-        Transform tile;
-
         if (slot.childCount > 0)
         {
-            tile = slot.GetChild(0);
-
             MinusTileCount();
 
-            Destroy(tile.gameObject);
+            Destroy(slot.GetChild(0).gameObject);
         }
     }
 
@@ -87,14 +50,19 @@ public class TileGenerator : MonoBehaviour
     public void MinusTileCount()
     {
         tileCount -= 1;
+
+        if (tileCount == 0)
+        {
+            Generate();
+        }
     }
 
     private void Generate()
     {
         tileCount = 3;
-        TileGenerate(InventorySlot1);
-        TileGenerate(InventorySlot2);
-        TileGenerate(InventorySlot3);
+        TileGenerate(inventorySlot1);
+        TileGenerate(inventorySlot2);
+        TileGenerate(inventorySlot3);
     }
 
     private int GetRandNum()
@@ -120,7 +88,7 @@ public class TileGenerator : MonoBehaviour
         int randNum = GetRandNum();
         int newType;
 
-        GameObject newTile = Instantiate(Tile, slot);
+        GameObject newTile = Instantiate(tile, slot);
         newTile.transform.SetParent(slot);
         Transform[] childList = newTile.GetComponentsInChildren<Transform>();
 
