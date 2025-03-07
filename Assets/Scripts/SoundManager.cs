@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    public static SoundManager Instance { get; private set; } // 싱글톤
+    public static SoundManager Instance { get; private set; }
 
-    [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip displaySound;
+    [SerializeField] private AudioSource audioSource; // 오디오 소스
+    [SerializeField] private AudioClip displaySound;  
     [SerializeField] private AudioClip levelUpSound;
     [SerializeField] private AudioClip forbidSound;
     [SerializeField] private AudioClip gameOverSound;
@@ -15,7 +15,7 @@ public class SoundManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject); // 씬 전환 시 유지
         }
         else
         {
@@ -26,10 +26,10 @@ public class SoundManager : MonoBehaviour
     // 사운드 재생 메서드
     public void PlaySound(AudioClip clip, float volume)
     {
-        if (clip == null || audioSource == null) return;
-
-        audioSource.PlayOneShot(clip,volume);
-
+        if (clip != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(clip,volume);
+        }
     }
 
     public void PlayDisplaySound()

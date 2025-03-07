@@ -343,7 +343,7 @@ GameObject:
   - component: {fileID: 286647606}
   - component: {fileID: 286647607}
   m_Layer: 5
-  m_Name: RerollButton
+  m_Name: Reroll
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -448,10 +448,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0973ed6dc4ecd4cadccb86c825877b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventorySlot1: {fileID: 1368387046}
-  inventorySlot2: {fileID: 1612394814}
-  inventorySlot3: {fileID: 211975258}
-  tile: {fileID: 4281849821120186797, guid: dfdc19b1bb8e1ef4ba28c7f054bc974c, type: 3}
+  InventorySlot1: {fileID: 1368387046}
+  InventorySlot2: {fileID: 1612394814}
+  InventorySlot3: {fileID: 211975258}
+  Tile: {fileID: 4281849821120186797, guid: dfdc19b1bb8e1ef4ba28c7f054bc974c, type: 3}
   RerollToggle: {fileID: 286647607}
   RerollBackground: {fileID: 1512647488}
   RerollCount: 0
@@ -557,7 +557,7 @@ Transform:
   m_GameObject: {fileID: 318467073}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1374.5236, y: 525.5883, z: -9.376533}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1306,7 +1306,7 @@ Transform:
   m_GameObject: {fileID: 527637542}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1301.4727, y: 325.85168, z: -15.279023}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3432,50 +3432,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5798820101133094455, guid: 87d5bfd4e00bb804c8ddc8f6b9b5b823, type: 3}
   m_PrefabInstance: {fileID: 542856430}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1509376516
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1509376517}
-  - component: {fileID: 1509376518}
-  m_Layer: 0
-  m_Name: GameManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1509376517
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1509376516}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1509376518
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1509376516}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13d113c1dae9e5343b873a20cafcaeeb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1511156990
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5150,4 +5106,3 @@ SceneRoots:
   - {fileID: 291107838}
   - {fileID: 318467075}
   - {fileID: 527637545}
-  - {fileID: 1509376517}

@@ -5,6 +5,7 @@ public class ResetButton : MonoBehaviour
 {
     public void Reset()
     {
-        GameManager.Instance.RestartScene();
+        SoundManager.Instance.PlayDisplaySound();
+        SceneManager.LoadScene("MainScene");
     }
 }
