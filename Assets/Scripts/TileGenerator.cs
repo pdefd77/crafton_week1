@@ -3,27 +3,29 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public enum Colors { WHITE, RED, MAGENTA, YELLOW };
 
 public class TileGenerator : MonoBehaviour
 {
-    [SerializeField]
-    private Transform inventorySlot1;
-    [SerializeField]
-    private Transform inventorySlot2;
-    [SerializeField]
-    private Transform inventorySlot3;
-    [SerializeField]
-    private GameObject tile;
+    [SerializeField] private Transform inventorySlot1;
+    [SerializeField] private Transform inventorySlot2;
+    [SerializeField] private Transform inventorySlot3;
+    [SerializeField] private GameObject tile;
 
     private int tileCount = 0;
+
+    private void Awake()
+    {
+        Generate();
+    }
 
     private void Update()
     {
         if (tileCount == 0)
         {
-            Generate();
+            //Generate();
         }
     }
     public void Reroll()
@@ -31,18 +33,20 @@ public class TileGenerator : MonoBehaviour
         DeleteTile(inventorySlot1);
         DeleteTile(inventorySlot2);
         DeleteTile(inventorySlot3);
-
-        Generate();
     }
 
 
     private void DeleteTile(Transform slot)
     {
+        Transform tmpTile;
+        
         if (slot.childCount > 0)
         {
+            tmpTile = slot.GetChild(0);
+            
+            Destroy(tmpTile.gameObject);
+            
             MinusTileCount();
-
-            Destroy(slot.GetChild(0).gameObject);
         }
     }
 

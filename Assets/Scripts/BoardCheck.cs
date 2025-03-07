@@ -8,20 +8,16 @@ using System;
 
 public class BoardCheck : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject[] boardSlot;
-    [SerializeField]
-    private TurnCounting turnCounting;
-    [SerializeField]
-    private TextMeshProUGUI scoreTxt;
-    [SerializeField]
-    private TextMeshProUGUI gameOverTxt;
+    [SerializeField] private GameObject[] boardSlot;
+    [SerializeField] private TurnCounting turnCounting;
+    [SerializeField] private TextMeshProUGUI scoreTxt;
+    [SerializeField] private TextMeshProUGUI gameOverTxt;
     public static int score = 0;
     public static bool gameover = false;
     public int displayedTileCount = 0;
     private int[] uf = new int[49];
 
-    private int[] checkNum = new int[] { 1, 2, 3, 4, 5, 7, 13, 14, 20, 21, 27, 28, 34, 35, 41, 43, 44, 45, 46, 47 };
+    private readonly int[] checkNum = new int[] { 1, 2, 3, 4, 5, 7, 13, 14, 20, 21, 27, 28, 34, 35, 41, 43, 44, 45, 46, 47 };
 
     public static int[,] adj = new int[7, 7];
 
@@ -130,7 +126,6 @@ public class BoardCheck : MonoBehaviour
         {
             uf[x] = UfFind(uf[x]);
             return uf[x];
-            //return UfFind(uf[x]);
         }
     }
 

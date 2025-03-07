@@ -4,8 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class TurnCounting : MonoBehaviour
 {
-    [SerializeField]
-    LevelUpEffect levelUpEffect;
+    [SerializeField] private LevelUpEffect levelUpEffect;
     public int turnCount;
     public int limitTurn;
     private int firstLimitTurn;
@@ -26,15 +25,6 @@ public class TurnCounting : MonoBehaviour
         firstGoalScore = goalScore;
         UpdateText();
     }
-
-    // testcode
-    /*private void Update()
-    {
-        if(Input.GetKeyDown("x")){
-            levelUpEffect.CrackerShoot(level);
-            //level++;
-        }
-    }*/
 
     // 씬이 로드될 때 변수 초기화
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)

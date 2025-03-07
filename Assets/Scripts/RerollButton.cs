@@ -3,10 +3,8 @@ using UnityEngine.UI;
 
 public class RerollButton : MonoBehaviour
 {
-    [SerializeField]
-    private TileGenerator tileGenerator;
-    [SerializeField]
-    private Image rerollButtonBackground;
+    [SerializeField] private TileGenerator tileGenerator;
+    [SerializeField] private Image rerollButtonBackground;
     private int rerollCount;
 
     private void Awake()
