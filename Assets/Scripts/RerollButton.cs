@@ -21,7 +21,7 @@ public class RerollButton : MonoBehaviour
         else
         {
             SoundManager.Instance.PlayDisplaySound();
-            rerollCount--;
+            //rerollCount--;
 
             tileGenerator.Reroll();
 

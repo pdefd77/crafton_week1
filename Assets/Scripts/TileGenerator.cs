@@ -33,6 +33,8 @@ public class TileGenerator : MonoBehaviour
         DeleteTile(inventorySlot1);
         DeleteTile(inventorySlot2);
         DeleteTile(inventorySlot3);
+
+        Generate();
     }
 
 
@@ -45,8 +47,6 @@ public class TileGenerator : MonoBehaviour
             tmpTile = slot.GetChild(0);
             
             Destroy(tmpTile.gameObject);
-            
-            MinusTileCount();
         }
     }
 
@@ -73,11 +73,11 @@ public class TileGenerator : MonoBehaviour
     {
         float randomValue = Random.Range(0f, 100f); // 0~100 »çÀÌÀÇ ·£´ý ¼ýÀÚ
 
-        if (randomValue < 95f)        // 95% È®·ü ¡æ 1~6
+        if (randomValue < 60f)        // 95% È®·ü ¡æ 1~6
         {
             return Random.Range(1, 7);
         }
-        else if (randomValue < 99.5f) // 4.5% È®·ü ¡æ 7~10
+        else if (randomValue < 90f) // 4.5% È®·ü ¡æ 7~10
         {
             return Random.Range(7, 11);
         }

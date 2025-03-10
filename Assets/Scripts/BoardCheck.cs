@@ -20,6 +20,7 @@ public class BoardCheck : MonoBehaviour
     private readonly int[] checkNum = new int[] { 1, 2, 3, 4, 5, 7, 13, 14, 20, 21, 27, 28, 34, 35, 41, 43, 44, 45, 46, 47 };
 
     public static int[,] adj = new int[7, 7];
+    public static bool[,] adj2 = new bool[26, 26];
 
     private void Awake()
     {
@@ -32,6 +33,133 @@ public class BoardCheck : MonoBehaviour
         {
             boardSlot[i] = boardInventory.transform.GetChild(i).gameObject;
         }
+
+        adj2 = new bool[26, 26];
+        for (int i = 1; i <= 5; i++)
+        {
+            adj2[0, i] = true;
+            adj2[0, 5 * i] = true;
+            adj2[0, 19 + i] = true;
+            adj2[0, 5 * i - 4] = true;
+        }
+    }
+
+    public void CheckEx(int idx, int tileType)
+    {
+        if ((tileType & 1) > 0) //위쪽과 이어짐
+        {
+            if (idx == 1 || idx == 2 || idx == 3 || idx == 4 || idx == 5) adj2[idx, 0] = true;
+            else adj2[idx, idx - 5] = true;
+        }
+        if ((tileType & 2) > 0) // 오른쪽과 이어짐
+        {
+            if (idx == 5 || idx == 10 || idx == 15 || idx == 20 || idx == 25) adj2[idx, 0] = true;
+            else adj2[idx, idx + 1] = true;
+        }
+        if ((tileType & 4) > 0) //아래쪽과 이어짐
+        {
+            if (idx == 21 || idx == 22 || idx == 23 || idx == 24 || idx == 25) adj2[idx, 0] = true;
+            else adj2[idx, idx + 5] = true;
+        }
+        if ((tileType & 8) > 0) // 오른쪽과 이어짐
+        {
+            if (idx == 1 || idx == 6 || idx == 11 || idx == 16 || idx == 21) adj2[idx, 0] = true;
+            else adj2[idx, idx - 1] = true;
+        }
+
+        bool[] visited = new bool[26];
+        bool[] cycleList = new bool[26];
+        Queue<int> cycleQueue = new();
+
+        if(Dfs(0, -1, ref visited, ref cycleList, ref cycleQueue))
+        {
+            while(cycleQueue.Count > 0)
+            {
+                for (int i = 0; i <= 25; i++) visited[i] = cycleList[i];
+                if (cycleQueue.Peek() != 0) Dfs2(cycleQueue.Peek(), -1, ref visited, ref cycleList, ref cycleQueue);
+                cycleQueue.Dequeue();
+            }
+            
+            for(int i = 1; i <= 25; i++)
+            {
+                if (!cycleList[i]) continue;
+
+                DestroyTile(i / 5 + 1, i % 5);
+            }
+        }
+
+        //턴 증가
+        //turnCounting.turnCount++;
+        //턴에 해당하는 점수 충족 여부 확인 및 게임 종료 결정
+        turnCounting.CheckTrunAndGoal();
+
+        if (displayedTileCount >= 25) // gameover
+        {
+            gameover = true;
+        }
+        if (gameover)
+        {
+            SoundManager.Instance.PlayGameOverSound();
+            gameOverTxt.gameObject.SetActive(true);
+            gameOverTxt.text = "Your Score is " + score;
+        }
+
+        scoreTxt.text = "Score : " + score;
+    }
+
+    // 외곽-외곽 경로 확인
+    private bool Dfs(int now, int prev, ref bool[] visited, ref bool[] cycleList, ref Queue<int> cycleQueue)
+    {
+        visited[now] = true;
+        cycleList[now] = true;
+
+        for(int i = 25; i >= 0; i--)
+        {
+            if (i == prev) continue;
+            if (!adj2[now, i] || !adj2[i, now]) continue;
+
+            if (!visited[i] && Dfs(i, now, ref visited, ref cycleList, ref cycleQueue))
+            {
+                cycleQueue.Enqueue(now);
+                return true;
+            }
+            else if (i == 0)
+            {
+                cycleQueue.Enqueue(now);
+                return true;
+            }
+        }
+
+        cycleList[now] = false;
+        return false;
+    }
+
+    // 내부 추가 경로 확인
+    private bool Dfs2(int now, int prev, ref bool[] visited, ref bool[] cycleList, ref Queue<int> cycleQueue)
+    {
+        visited[now] = true;
+        cycleList[now] = true;
+
+        for (int i = 25; i >= 0; i--)
+        {
+            if (i == prev) continue;
+            if (!adj2[now, i] || !adj2[i, now]) continue;
+            if (prev == -1 && cycleList[i]) continue;
+
+            if (!visited[i] && Dfs2(i, now, ref visited, ref cycleList, ref cycleQueue))
+            {
+                cycleQueue.Enqueue(now);
+                return true;
+            }
+            else if (cycleList[i])
+            {
+                cycleQueue.Enqueue(now);
+                return true;
+            }
+        }
+
+        if (prev != -1) cycleList[now] = false;
+        return false;
     }
 
     public void Check()
@@ -146,14 +274,16 @@ public class BoardCheck : MonoBehaviour
         }
 
         // 점수 계산 : 배율 정해서. 이부분은 쉽게 수정되게. 배율변수 빼기.
-        displayedTileCount -= len;
+        //displayedTileCount -= len;
         score += len * len * len;
     }
 
     private void DestroyTile(int y, int x)
     {
         adj[y, x] = 0;
-        if(boardSlot[5 * y + x - 6].transform.childCount > 0)
+        for (int i = 0; i <= 25; i++) adj2[5 * y - 5 + x, i] = false;
+        displayedTileCount--;
+        if (boardSlot[5 * y + x - 6].transform.childCount > 0)
         {
             boardSlot[5 * y + x - 6].transform.GetChild(0).GetComponent<TileDestroy>().StartBreak();
         }

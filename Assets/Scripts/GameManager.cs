@@ -23,4 +23,18 @@ public class GameManager : MonoBehaviour
         SoundManager.Instance.PlayDisplaySound();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
+
+    public void GotoScene(int sceneIdx)
+    {
+        SceneManager.LoadScene(sceneIdx);
+    }
+
+    public void QuitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
 }

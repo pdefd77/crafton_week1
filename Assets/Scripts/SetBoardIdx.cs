@@ -9,7 +9,7 @@ public class SetBoardIdx : MonoBehaviour
 
         for(int i = 0; i < boardSlots.Length; i++)
         {
-            boardSlots[i].SetIdx(i);
+            boardSlots[i].SetIdx(i + 1);
         }
     }
 }
