@@ -12,29 +12,40 @@ public class TileGenerator : MonoBehaviour
     [SerializeField] private Transform inventorySlot1;
     [SerializeField] private Transform inventorySlot2;
     [SerializeField] private Transform inventorySlot3;
+    [SerializeField] private Transform[] inventorySlots;
     [SerializeField] private GameObject tile;
 
     private int tileCount = 0;
 
     private void Awake()
     {
-        Generate();
+        tileCount = inventorySlots.Length;
+        GenerateParam(inventorySlots);
     }
 
-    private void Update()
-    {
-        if (tileCount == 0)
-        {
-            //Generate();
-        }
-    }
     public void Reroll()
     {
-        DeleteTile(inventorySlot1);
-        DeleteTile(inventorySlot2);
-        DeleteTile(inventorySlot3);
+        DeleteParam(inventorySlots);
 
-        Generate();
+        GenerateParam(inventorySlots);
+    }
+
+    private void DeleteParam(params Transform[] inventorySlots)
+    {
+        foreach(Transform inventorySlot in inventorySlots)
+        {
+            DeleteTile(inventorySlot);
+        }
+    }
+
+    private void GenerateParam(params Transform[] inventorySlots)
+    {
+        tileCount = inventorySlots.Length;
+
+        foreach (Transform inventorySlot in inventorySlots)
+        {
+            TileGenerate(inventorySlot);
+        }
     }
 
 
@@ -57,16 +68,8 @@ public class TileGenerator : MonoBehaviour
 
         if (tileCount == 0)
         {
-            Generate();
+            GenerateParam(inventorySlots);
         }
-    }
-
-    private void Generate()
-    {
-        tileCount = 3;
-        TileGenerate(inventorySlot1);
-        TileGenerate(inventorySlot2);
-        TileGenerate(inventorySlot3);
     }
 
     private int GetRandNum()

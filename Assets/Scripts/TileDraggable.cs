@@ -50,14 +50,11 @@ public class TileDraggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         else
         {
             int idx = transform.parent.GetComponent<BoardSlot>().GetIdx();
-            BoardCheck.adj[idx / 5 + 1, idx % 5 + 1] = tileType;
             tileGenerator = GameObject.Find("TileGenerator");
-            tileGenerator.GetComponent<BoardCheck>().displayedTileCount += 1;
             tileDraggable.enabled = false;
 
             tileGenerator.GetComponent<TileGenerator>().MinusTileCount();
-            //tileGenerator.GetComponent<BoardCheck>().Check();
-            tileGenerator.GetComponent<BoardCheck>().CheckEx(idx, tileType);
+            tileGenerator.GetComponent<BoardCheck>().Check(idx, tileType);
 
             SoundManager.Instance.PlayDisplaySound();
         }

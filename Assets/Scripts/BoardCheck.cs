@@ -14,17 +14,12 @@ public class BoardCheck : MonoBehaviour
     [SerializeField] private TextMeshProUGUI gameOverTxt;
     public static int score = 0;
     public static bool gameover = false;
-    public int displayedTileCount = 0;
-    private int[] uf = new int[49];
+    private int displayedTileCount = 0;
 
-    private readonly int[] checkNum = new int[] { 1, 2, 3, 4, 5, 7, 13, 14, 20, 21, 27, 28, 34, 35, 41, 43, 44, 45, 46, 47 };
-
-    public static int[,] adj = new int[7, 7];
     public static bool[,] adj2 = new bool[26, 26];
 
     private void Awake()
     {
-        adj = new int[7, 7] { { 0, 4, 4, 4, 4, 4, 0 }, { 2, 0, 0, 0, 0, 0, 8 }, { 2, 0, 0, 0, 0, 0, 8 }, { 2, 0, 0, 0, 0, 0, 8 }, { 2, 0, 0, 0, 0, 0, 8 }, { 2, 0, 0, 0, 0, 0, 8 }, { 0, 1, 1, 1, 1, 1, 0 } };
         gameover = false;
         score = 0;
         scoreTxt.text = "Score : " + score;
@@ -44,8 +39,10 @@ public class BoardCheck : MonoBehaviour
         }
     }
 
-    public void CheckEx(int idx, int tileType)
+    public void Check(int idx, int tileType)
     {
+        displayedTileCount++;
+
         if ((tileType & 1) > 0) //위쪽과 이어짐
         {
             if (idx == 1 || idx == 2 || idx == 3 || idx == 4 || idx == 5) adj2[idx, 0] = true;
@@ -70,8 +67,9 @@ public class BoardCheck : MonoBehaviour
         bool[] visited = new bool[26];
         bool[] cycleList = new bool[26];
         Queue<int> cycleQueue = new();
+        int cycleLength = 0;
 
-        if(Dfs(0, -1, ref visited, ref cycleList, ref cycleQueue))
+        if(CornerCheck(idx, tileType, ref cycleList, ref cycleQueue) || Dfs(0, -1, ref visited, ref cycleList, ref cycleQueue))
         {
             while(cycleQueue.Count > 0)
             {
@@ -84,16 +82,19 @@ public class BoardCheck : MonoBehaviour
             {
                 if (!cycleList[i]) continue;
 
+                cycleLength++;
                 DestroyTile(i / 5 + 1, i % 5);
             }
         }
 
+        score += cycleLength * cycleLength * cycleLength;
+
         //턴 증가
-        //turnCounting.turnCount++;
+        turnCounting.turnCount++;
         //턴에 해당하는 점수 충족 여부 확인 및 게임 종료 결정
         turnCounting.CheckTrunAndGoal();
 
-        if (displayedTileCount >= 25) // gameover
+        if (displayedTileCount >= 25)
         {
             gameover = true;
         }
@@ -162,125 +163,39 @@ public class BoardCheck : MonoBehaviour
         return false;
     }
 
-    public void Check()
+    // 가장자리끼리 이어지는 엣지케이스 체크
+    private bool CornerCheck(int idx, int tileType, ref bool[] cycleList, ref Queue<int> cycleQueue)
     {
-        for (int i = 0; i < 49; i++) uf[i] = i;
-        int cycleCheck = 0;
-
-        // 연결하기
-        for (int i = 1; i <= 5; i++)
+        if (idx == 1 && (tileType & 1) > 0 && (tileType & 8) > 0) // 왼쪽위
         {
-            for (int j = 1; j <= 5; j++)
-            {
-                if ((adj[i, j] & 1) > 0 && (adj[i - 1, j] & 4) > 0) // 도로와 위쪽이 이어져 있는지
-                {
-                    UfMerge(7 * i + j, 7 * i + j - 7);
-                }
-                if ((adj[i, j] & 2) > 0 && (adj[i, j + 1] & 8) > 0) // 도로와 오른쪽이 이어져 있는지
-                {
-                    UfMerge(7 * i + j, 7 * i + j + 1);
-                }
-                if ((adj[i, j] & 4) > 0 && (adj[i + 1, j] & 1) > 0) // 도로와 아래쪽이 이어져 있는지
-                {
-                    UfMerge(7 * i + j, 7 * i + j + 7);
-                }
-                if ((adj[i, j] & 8) > 0 && (adj[i, j - 1] & 2) > 0) // 도로와 왼쪽이 이어져 있는지
-                {
-                    UfMerge(7 * i + j, 7 * i + j - 1);
-                }
-            }
+            cycleList[1] = true;
+            cycleQueue.Enqueue(1);
         }
-
-        // 연결 확인
-        for(int i = 0; i < 7; i++)
+        else if(idx == 5 && (tileType & 1) > 0 && (tileType & 2) > 0) // 오른쪽위
         {
-            for(int j = 0; j < 7; j++)
-            {
-                if (i > 0 && i < 6 && j > 0 && j < 6) continue;
-
-                if (uf[7 * i + j] != 7 * i + j)
-                {
-                    cycleCheck = uf[7 * i + j];
-                }
-            }
+            cycleList[5] = true;
+            cycleQueue.Enqueue(5);
         }
-
-        if (cycleCheck > 0)
+        else if (idx == 21 && (tileType & 4) > 0 && (tileType & 8) > 0) // 왼쪽아래
         {
-            GetScore(cycleCheck);
+            cycleList[21] = true;
+            cycleQueue.Enqueue(21);
         }
-
-        //턴 증가
-        turnCounting.turnCount++;
-        //턴에 해당하는 점수 충족 여부 확인 및 게임 종료 결정
-        turnCounting.CheckTrunAndGoal();
-
-        if (displayedTileCount >= 25) // gameover
+        else if (idx == 25 && (tileType & 4) > 0 && (tileType & 2) > 0) // 오른쪽아래
         {
-            gameover = true;
-        }
-        if(gameover)
-        {
-            SoundManager.Instance.PlayGameOverSound();
-            gameOverTxt.gameObject.SetActive(true);
-            gameOverTxt.text = "Your Score is " + score;
-        }
-
-        scoreTxt.text = "Score : " + score;
-    }
-
-    private void UfMerge(int a, int b)
-    {
-        a = UfFind(a);
-        b = UfFind(b);
-
-        if (Array.Exists(checkNum, x => x == a))
-        {
-            uf[b] = a;
+            cycleList[25] = true;
+            cycleQueue.Enqueue(25);
         }
         else
         {
-            uf[a] = b;
-        }
-    }
-
-    private int UfFind(int x)
-    {
-        if (uf[x] == x)
-        {
-            return x;
-        }
-        else
-        {
-            uf[x] = UfFind(uf[x]);
-            return uf[x];
-        }
-    }
-
-    private void GetScore(int num)
-    {
-        int len = 0;
-
-        for(int i = 1; i <= 5; i++)
-        {
-            for(int j = 1; j <= 5; j++)
-            {
-                if (UfFind(uf[7 * i + j]) == num)
-                {
-                    DestroyTile(i, j);
-                    len++;
-                }
-            }
+            return false;
         }
 
-        // 점수 계산 : 배율 정해서. 이부분은 쉽게 수정되게. 배율변수 빼기.
-        //displayedTileCount -= len;
-        score += len * len * len;
+        return true;
     }
 
     private void DestroyTile(int y, int x)
     {
-        adj[y, x] = 0;
         for (int i = 0; i <= 25; i++) adj2[5 * y - 5 + x, i] = false;
         displayedTileCount--;
         if (boardSlot[5 * y + x - 6].transform.childCount > 0)
