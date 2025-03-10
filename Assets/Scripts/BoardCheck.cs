@@ -1,9 +1,6 @@
 using UnityEngine;
 using TMPro;
-using NUnit.Framework;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using System.Runtime.CompilerServices;
 using System;
 
 public class BoardCheck : MonoBehaviour
@@ -12,6 +9,7 @@ public class BoardCheck : MonoBehaviour
     [SerializeField] private TurnCounting turnCounting;
     [SerializeField] private TextMeshProUGUI scoreTxt;
     [SerializeField] private TextMeshProUGUI gameOverTxt;
+    [SerializeField] private TextMeshProUGUI maxScoreTxt;
     public static int score = 0;
     public static bool gameover = false;
     private int displayedTileCount = 0;
@@ -22,7 +20,7 @@ public class BoardCheck : MonoBehaviour
     {
         gameover = false;
         score = 0;
-        scoreTxt.text = "Score : " + score;
+        scoreTxt.text = "현재 점수 " + score;
         GameObject boardInventory = GameObject.Find("BoardInventory");
         for (int i = 0; i < 25; i++)
         {
@@ -37,6 +35,11 @@ public class BoardCheck : MonoBehaviour
             adj2[0, 19 + i] = true;
             adj2[0, 5 * i - 4] = true;
         }
+    }
+
+    private void Start()
+    {
+        DisplayMaxScore();
     }
 
     public void Check(int idx, int tileType)
@@ -87,25 +90,46 @@ public class BoardCheck : MonoBehaviour
             }
         }
 
+        DataManager.Instance.playerData.totalTile += cycleLength;
         score += cycleLength * cycleLength * cycleLength;
+        DataManager.Instance.playerData.totalScore += cycleLength * cycleLength * cycleLength;
+        if (cycleLength >= 10 && !DataManager.Instance.playerData.achievement[0])
+        {
+            DataManager.Instance.playerData.achievement[0] = true;
+            DataManager.Instance.playerData.achievementTime[0] = DateTime.Now.ToString(("yyyy-MM-dd HH:mm:ss"));
+        }
 
         //턴 증가
         turnCounting.turnCount++;
+        DataManager.Instance.playerData.totalTurn++;
         //턴에 해당하는 점수 충족 여부 확인 및 게임 종료 결정
         turnCounting.CheckTrunAndGoal();
 
         if (displayedTileCount >= 25)
         {
             gameover = true;
+
+            if (!DataManager.Instance.playerData.achievement[1])
+            {
+                DataManager.Instance.playerData.achievement[1] = true;
+                DataManager.Instance.playerData.achievementTime[1] = DateTime.Now.ToString(("yyyy-MM-dd HH:mm:ss"));
+            }
         }
         if (gameover)
         {
             SoundManager.Instance.PlayGameOverSound();
             gameOverTxt.gameObject.SetActive(true);
-            gameOverTxt.text = "Your Score is " + score;
+            gameOverTxt.text = "당신의 점수는 " + score + "점입니다.";
         }
 
-        scoreTxt.text = "Score : " + score;
+        scoreTxt.text = "현재 점수 " + score;
+        DataManager.Instance.playerData.maxScore = Math.Max(DataManager.Instance.playerData.maxScore, score);
+        DisplayMaxScore();
+        if (score>=10000 && !DataManager.Instance.playerData.achievement[2])
+        {
+            DataManager.Instance.playerData.achievement[2] = true;
+            DataManager.Instance.playerData.achievementTime[2] = DateTime.Now.ToString(("yyyy-MM-dd HH:mm:ss"));
+        }
     }
 
     // 외곽-외곽 경로 확인
@@ -202,5 +226,10 @@ public class BoardCheck : MonoBehaviour
         {
             boardSlot[5 * y + x - 6].transform.GetChild(0).GetComponent<TileDestroy>().StartBreak();
         }
+    }
+
+    private void DisplayMaxScore()
+    {
+        maxScoreTxt.text = "최고 점수 " + DataManager.Instance.playerData.maxScore;
     }
 }

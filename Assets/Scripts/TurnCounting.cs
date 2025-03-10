@@ -14,6 +14,7 @@ public class TurnCounting : MonoBehaviour
 
     private int level = 1;
 
+    [SerializeField] private RerollButton rerollButton;
     [SerializeField] private TextMeshProUGUI limitTurnText;
     [SerializeField] private TextMeshProUGUI goalScoreText;
 
@@ -78,7 +79,9 @@ public class TurnCounting : MonoBehaviour
 
                 levelUpEffect.CrackerShoot(level);
                 level++;
+                rerollButton.AddRerollCount();
                 SoundManager.Instance.PlayLevelUpSound();
+                UpdateText();
             }
         }
     }
@@ -86,7 +89,7 @@ public class TurnCounting : MonoBehaviour
     //텍스트 갱신
     private void UpdateText()
     {
-        limitTurnText.text = "Turn : " + turnCount + " / " + limitTurn;
-        goalScoreText.text = "Goal : " + goalScore;
+        limitTurnText.text = "턴 수 " + turnCount + " / " + limitTurn;
+        goalScoreText.text = "다음 목표 " + goalScore;
     }
 }

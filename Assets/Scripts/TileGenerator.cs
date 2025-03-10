@@ -1,17 +1,10 @@
 using UnityEngine;
-using TMPro;
-using UnityEngine.SceneManagement;
-using System.Linq;
 using UnityEngine.UI;
-using Unity.VisualScripting;
 
 public enum Colors { WHITE, RED, MAGENTA, YELLOW };
 
 public class TileGenerator : MonoBehaviour
 {
-    [SerializeField] private Transform inventorySlot1;
-    [SerializeField] private Transform inventorySlot2;
-    [SerializeField] private Transform inventorySlot3;
     [SerializeField] private Transform[] inventorySlots;
     [SerializeField] private GameObject tile;
 
@@ -44,7 +37,7 @@ public class TileGenerator : MonoBehaviour
 
         foreach (Transform inventorySlot in inventorySlots)
         {
-            TileGenerate(inventorySlot);
+            GenerateTile(inventorySlot);
         }
     }
 
@@ -90,7 +83,7 @@ public class TileGenerator : MonoBehaviour
         }
     }
 
-    private void TileGenerate(Transform slot)
+    private void GenerateTile(Transform slot)
     {
         int randNum = GetRandNum();
         int newType;

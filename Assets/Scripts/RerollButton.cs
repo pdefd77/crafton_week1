@@ -1,15 +1,22 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class RerollButton : MonoBehaviour
 {
     [SerializeField] private TileGenerator tileGenerator;
-    [SerializeField] private Image rerollButtonBackground;
     private int rerollCount;
 
     private void Awake()
     {
         rerollCount = 3;
+    }
+
+    public void AddRerollCount()
+    {
+        rerollCount++;
+
+        transform.GetComponentInChildren<TextMeshProUGUI>().text = "Reroll\n(" + rerollCount + "회 남음)";
     }
 
     public void Reroll()
@@ -21,14 +28,16 @@ public class RerollButton : MonoBehaviour
         else
         {
             SoundManager.Instance.PlayDisplaySound();
-            //rerollCount--;
+            rerollCount--;
 
             tileGenerator.Reroll();
 
             if(rerollCount == 0)
             {
-                rerollButtonBackground.color = Color.red;
+                transform.GetComponent<Image>().color = Color.red;
             }
         }
+
+        transform.GetComponentInChildren<TextMeshProUGUI>().text = "Reroll\n(" + rerollCount + "회 남음)";
     }
 }
