@@ -8,8 +8,9 @@ public class TileGenerator : MonoBehaviour
 {
     [SerializeField] private TouchPadHandler touchPadHandler;
     private Transform[] _offerSlot = new Transform[3];
-    private GameObject[] _boardSlot = new GameObject[25];
+
     [SerializeField] private GameObject Tile;
+    [SerializeField] private BoardSlot[] _boardSlot;
 
     private int tileCount = 0;
     private List<int> tileTypes = new List<int>();
@@ -22,14 +23,10 @@ public class TileGenerator : MonoBehaviour
         {
             _offerSlot[i] = offerSlots[i].transform;
         }
+    }
 
-        // BoardSlot 초기화
-        Transform boardInventory = FindAnyObjectByType<SetBoardIdx>().transform;
-        for (int i = 0; i < boardInventory.childCount; i++)
-        {
-            _boardSlot[i] = boardInventory.GetChild(i).gameObject;
-        }
-
+    private void Start()
+    {
         Generate();
     }
 
@@ -105,7 +102,6 @@ public class TileGenerator : MonoBehaviour
             }
 
             // 만약 모두 같다면, 다시 생성하기 전에 방금 만든 타일들을 삭제
-            Debug.Log("All same tiles generated.");
             DeleteAllSlotTiles();
         }
     }
@@ -209,7 +205,7 @@ public class TileGenerator : MonoBehaviour
                 break;
         }
 
-        newTile.GetComponent<TileDraggable>().tileType = newType;
+        newTile.GetComponent<TileDraggable>().Init(newType, _boardSlot);
         return newTile;
     }
 
@@ -280,10 +276,10 @@ public class TileGenerator : MonoBehaviour
             TileDraggable tileDraggable = newTile.GetComponent<TileDraggable>();
             CanvasGroup canvasGroup = newTile.GetComponent<CanvasGroup>();
 
-            BoardCheck.adj[idx / 5 + 1, idx % 5 + 1] = tileDraggable.tileType;
+            BoardCheck.adj[idx / 5 + 1, idx % 5 + 1] = tileDraggable.TileType;
 
             // Fake 타일 아닐 시 카운트
-            if (tileDraggable.tileType != -1) boardCheck.displayedTileCount += 1;
+            if (tileDraggable.TileType != -1) boardCheck.displayedTileCount += 1;
 
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;

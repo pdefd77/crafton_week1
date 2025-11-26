@@ -9,6 +9,7 @@ public class BoardCheck : MonoBehaviour
     [SerializeField] private GameOverCanvas gameOverCanvas;
     [SerializeField] private MissionController missionController;
     [SerializeField] private GameObject[] boardSlot;
+
     private ScoreManager scoreManager;
     private SfxManager sfxManager;
     public static bool gameover = false;
@@ -39,13 +40,9 @@ public class BoardCheck : MonoBehaviour
     {
         adj = new int[7, 7] { { 0, 4, 4, 4, 4, 4, 0 }, { 2, 0, 0, 0, 0, 0, 8 }, { 2, 0, 0, 0, 0, 0, 8 }, { 2, 0, 0, 0, 0, 0, 8 }, { 2, 0, 0, 0, 0, 0, 8 }, { 2, 0, 0, 0, 0, 0, 8 }, { 0, 1, 1, 1, 1, 1, 0 } };
         gameover = false;
-        GameObject boardInventory = GameObject.Find("BoardInventory");
+
         scoreManager = FindAnyObjectByType<ScoreManager>();
         sfxManager = FindAnyObjectByType<SfxManager>();
-        for (int i = 0; i < 25; i++)
-        {
-            boardSlot[i] = boardInventory.transform.GetChild(i).gameObject;
-        }
     }
 
     public void Check()
