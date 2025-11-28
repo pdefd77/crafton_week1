@@ -1233,6 +1233,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5061275968633326993, guid: 527a6515249a7f441a93ea38fe4d3dfe, type: 3}
   m_PrefabInstance: {fileID: 7297555820339834214}
   m_PrefabAsset: {fileID: 0}
+--- !u!223 &1824445562 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 3345068639179404638, guid: 527a6515249a7f441a93ea38fe4d3dfe, type: 3}
+  m_PrefabInstance: {fileID: 7297555820339834214}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1841120565 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6437468435484927301, guid: 527a6515249a7f441a93ea38fe4d3dfe, type: 3}
@@ -1821,7 +1826,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5664099585398967392, guid: 9e02f51c0dfc4da45bd757add6ba5ebb, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 15733.203
+      value: 433013.2
       objectReference: {fileID: 0}
     - target: {fileID: 6022915201756357127, guid: 9e02f51c0dfc4da45bd757add6ba5ebb, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2065,6 +2070,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 134997124}
     - target: {fileID: 6264430634110962877, guid: 7466471b8f5dcb1429f32793e37c5af3, type: 3}
+      propertyPath: gameCanvas
+      value: 
+      objectReference: {fileID: 1824445562}
+    - target: {fileID: 6264430634110962877, guid: 7466471b8f5dcb1429f32793e37c5af3, type: 3}
+      propertyPath: tilePiecePref
+      value: 
+      objectReference: {fileID: 4281849821120186797, guid: afa9d5a4293034c4baad18f053211e89, type: 3}
+    - target: {fileID: 6264430634110962877, guid: 7466471b8f5dcb1429f32793e37c5af3, type: 3}
       propertyPath: gameOverCanvas
       value: 
       objectReference: {fileID: 320673448}
@@ -2169,12 +2182,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 348438248}
     - target: {fileID: 8116778099063477038, guid: 7466471b8f5dcb1429f32793e37c5af3, type: 3}
+      propertyPath: tileSpriteAtlas
+      value: 
+      objectReference: {fileID: 100100200, guid: 4c3a2d6aad3d297438ffdd515812b79c, type: 3}
+    - target: {fileID: 8116778099063477038, guid: 7466471b8f5dcb1429f32793e37c5af3, type: 3}
       propertyPath: touchPadHandler
       value: 
       objectReference: {fileID: 1412294162}
     - target: {fileID: 8116778099063477038, guid: 7466471b8f5dcb1429f32793e37c5af3, type: 3}
       propertyPath: _boardSlot.Array.size
       value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8116778099063477038, guid: 7466471b8f5dcb1429f32793e37c5af3, type: 3}
+      propertyPath: _offerSlot.Array.size
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8116778099063477038, guid: 7466471b8f5dcb1429f32793e37c5af3, type: 3}
       propertyPath: '_boardSlot.Array.data[0]'
@@ -2216,6 +2237,30 @@ PrefabInstance:
       propertyPath: '_boardSlot.Array.data[9]'
       value: 
       objectReference: {fileID: 7297555820339834230}
+    - target: {fileID: 8116778099063477038, guid: 7466471b8f5dcb1429f32793e37c5af3, type: 3}
+      propertyPath: '_offerSlot.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1368387046}
+    - target: {fileID: 8116778099063477038, guid: 7466471b8f5dcb1429f32793e37c5af3, type: 3}
+      propertyPath: '_offerSlot.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1612394814}
+    - target: {fileID: 8116778099063477038, guid: 7466471b8f5dcb1429f32793e37c5af3, type: 3}
+      propertyPath: '_offerSlot.Array.data[2]'
+      value: 
+      objectReference: {fileID: 211975258}
+    - target: {fileID: 8116778099063477038, guid: 7466471b8f5dcb1429f32793e37c5af3, type: 3}
+      propertyPath: '_offerSlot.Array.data[3]'
+      value: 
+      objectReference: {fileID: 1368387046}
+    - target: {fileID: 8116778099063477038, guid: 7466471b8f5dcb1429f32793e37c5af3, type: 3}
+      propertyPath: '_offerSlot.Array.data[4]'
+      value: 
+      objectReference: {fileID: 1612394814}
+    - target: {fileID: 8116778099063477038, guid: 7466471b8f5dcb1429f32793e37c5af3, type: 3}
+      propertyPath: '_offerSlot.Array.data[5]'
+      value: 
+      objectReference: {fileID: 211975258}
     - target: {fileID: 8116778099063477038, guid: 7466471b8f5dcb1429f32793e37c5af3, type: 3}
       propertyPath: '_boardSlot.Array.data[10]'
       value: 

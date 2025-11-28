@@ -2082,9 +2082,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ec38b7302154974a908bb37f4b4ae96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _clickDelay: 1
+  _clickDelay: 1.5
   CustomSlotIndex: 020000000200000002000000
   CustomBoardIndex: ffffffff00000000ffffffffffffffffffffffffffffffff02000000ffffffffffffffffffffffffffffffff060000000100000004000000ffffffffffffffffffffffffffffffff02000000ffffffffffffffffffffffffffffffff02000000ffffffff
+--- !u!223 &1005384199 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 3345068639179404638, guid: 527a6515249a7f441a93ea38fe4d3dfe, type: 3}
+  m_PrefabInstance: {fileID: 923177719}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &1006630426 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6872473248778668201, guid: 527a6515249a7f441a93ea38fe4d3dfe, type: 3}
+  m_PrefabInstance: {fileID: 923177719}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &1082083838 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2178119523964796335, guid: 527a6515249a7f441a93ea38fe4d3dfe, type: 3}
+  m_PrefabInstance: {fileID: 923177719}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1085336097
 GameObject:
   m_ObjectHideFlags: 0
@@ -2154,6 +2169,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &1256882742 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3750180825452455013, guid: 527a6515249a7f441a93ea38fe4d3dfe, type: 3}
+  m_PrefabInstance: {fileID: 923177719}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1292755827
 GameObject:
   m_ObjectHideFlags: 0
@@ -4911,6 +4931,8 @@ MonoBehaviour:
   fastForwardMultiplier: 3
   dominoOverlap: 0.7
   bounceEase: 7
+  tilePiecePref: {fileID: 4281849821120186797, guid: afa9d5a4293034c4baad18f053211e89, type: 3}
+  gameCanvas: {fileID: 1005384199}
 --- !u!114 &7833445714203545516
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4924,7 +4946,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   touchPadHandler: {fileID: 1412294162}
-  Tile: {fileID: 4281849821120186797, guid: dfdc19b1bb8e1ef4ba28c7f054bc974c, type: 3}
+  _offerSlot:
+  - {fileID: 1256882742}
+  - {fileID: 1082083838}
+  - {fileID: 1006630426}
   _boardSlot:
   - {fileID: 923177769}
   - {fileID: 923177767}
@@ -4951,6 +4976,9 @@ MonoBehaviour:
   - {fileID: 923177725}
   - {fileID: 923177723}
   - {fileID: 923177721}
+  Tile: {fileID: 4281849821120186797, guid: ddcea67afac70f64784612f7d39c355f, type: 3}
+  FakeTile: {fileID: 4281849821120186797, guid: 2abd256be4772b74890d2dab2bb5d204, type: 3}
+  tileSpriteAtlas: {fileID: 100100200, guid: 4c3a2d6aad3d297438ffdd515812b79c, type: 3}
 --- !u!114 &7856238147150978120
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,29 +1,22 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.U2D;
 
 public enum Colors { WHITE, RED, MAGENTA, YELLOW, TRANSPARENT };
 
 public class TileGenerator : MonoBehaviour
 {
     [SerializeField] private TouchPadHandler touchPadHandler;
-    private Transform[] _offerSlot = new Transform[3];
+    [SerializeField] private Transform[] _offerSlot;
+    [SerializeField] private BoardSlot[] _boardSlot;
 
     [SerializeField] private GameObject Tile;
-    [SerializeField] private BoardSlot[] _boardSlot;
+    [SerializeField] private GameObject FakeTile;
+    [SerializeField] private SpriteAtlas tileSpriteAtlas;
 
     private int tileCount = 0;
     private List<int> tileTypes = new List<int>();
-
-    private void Awake()
-    {
-        // InventorySlot 초기화
-        OfferSlot[] offerSlots = FindObjectsByType<OfferSlot>(FindObjectsSortMode.None);
-        for (int i = 0; i < 3; i++)
-        {
-            _offerSlot[i] = offerSlots[i].transform;
-        }
-    }
 
     private void Start()
     {
@@ -133,109 +126,65 @@ public class TileGenerator : MonoBehaviour
 
     GameObject GenerateTile(Transform slot, int tileIndex)
     {
+        if (tileIndex == -1)
+        {
+            // Fake 타일 (튜토리얼에 사용되는 빈 타일)
+            GameObject fakeTile = Instantiate(FakeTile, slot);
+            return fakeTile;
+        }
+
         // Tile Index에 따른 타일 생성
         tileTypes.Add(tileIndex);
 
         int newType;
 
         GameObject newTile = Instantiate(Tile, slot);
-        //newTile.transform.SetParent(slot);
-        Transform[] childList = newTile.GetComponentsInChildren<Transform>();
 
         switch (tileIndex)
         {
             case 1:
                 newType = 10; // ─모양
-                ChangeColor(Colors.WHITE, childList[4], childList[5],childList[6]);
                 break;
             case 2:
                 newType = 5; // │모양
-                ChangeColor(Colors.WHITE, childList[2], childList[5], childList[8]);
                 break;
             case 3:
                 newType = 6; // ┌모양
-                ChangeColor(Colors.WHITE, childList[5], childList[6], childList[8]);
                 break;
             case 4:
                 newType = 12; // ┐모양
-                ChangeColor(Colors.WHITE, childList[4], childList[5], childList[8]);
                 break;
             case 5:
                 newType = 9; // ┘모양
-                ChangeColor(Colors.WHITE, childList[2], childList[4], childList[5]);
                 break;
             case 6:
                 newType = 3; // └모양
-                ChangeColor(Colors.WHITE, childList[2], childList[5], childList[6]);
                 break;
             case 7:
-                newType = 7; // ┬모양 0111
-                ChangeColor(Colors.WHITE, childList[2], childList[5], childList[6], childList[8]);
-                ChangeColor(Colors.MAGENTA, childList[1], childList[3], childList[4], childList[7], childList[9]);
+                newType = 7; // ├모양 1101
                 break;
             case 8:
-                newType = 11; // ┤모양 1011
-                ChangeColor(Colors.WHITE, childList[2], childList[4], childList[5], childList[6]);
-                ChangeColor(Colors.MAGENTA, childList[1], childList[3], childList[7], childList[8], childList[9]);
+                newType = 11; // ┴모양 1110
                 break;
             case 9:
-                newType = 14; // ┴모양 1110
-                ChangeColor(Colors.WHITE, childList[4], childList[5], childList[6], childList[8]);
-                ChangeColor(Colors.MAGENTA, childList[1], childList[2], childList[3], childList[7], childList[9]);
+                newType = 14; // ┬모양 0111
                 break;
             case 10:
-                newType = 13; // ├모양 1101
-                ChangeColor(Colors.WHITE, childList[2], childList[4], childList[5], childList[8]);
-                ChangeColor(Colors.MAGENTA, childList[1], childList[3], childList[6], childList[7], childList[9]);
+                newType = 13; // ┤모양 1011
                 break;
             case 11:
                 newType = 15; // ┼모양 1111
-                ChangeColor(Colors.WHITE, childList[2], childList[4], childList[5], childList[6], childList[8]);
-                ChangeColor(Colors.YELLOW, childList[1], childList[3], childList[7], childList[9]);
-                break;
-
-            case -1:
-                newType = 0; // Fake 타일 (튜토리얼에 사용되는 비어보이는 타일)
-                ChangeColor(Colors.TRANSPARENT, childList[1],  childList[2], childList[3],
-                    childList[4], childList[5], childList[6],
-                    childList[7],  childList[8], childList[9]);
                 break;
             default:
                 newType = 0;
                 break;
         }
 
+        // 타일 이미지 변경 및 초기화
+        Sprite tileSprite = tileSpriteAtlas.GetSprite("Tile" + tileIndex);
+        newTile.GetComponent<Image>().sprite = tileSprite;
         newTile.GetComponent<TileDraggable>().Init(newType, _boardSlot);
         return newTile;
-    }
-
-    private void ChangeColor(Colors colorType, params Transform[] colorList)
-    {
-        Color newColor = Color.black;
-
-        switch (colorType)
-        {
-            case Colors.WHITE:
-                newColor = Color.white;
-                break;
-            case Colors.RED:
-                newColor = Color.red;
-                break;
-            case Colors.MAGENTA:
-                newColor = new Color32(155, 165, 248, 255);
-                break;
-            case Colors.YELLOW:
-                newColor = new Color32(255, 83, 110, 255);
-                break;
-            case Colors.TRANSPARENT:
-                newColor = new Color32(0, 0, 0, 0);
-                break;
-        }
-
-        foreach(Transform elem in colorList)
-        {
-            elem.GetComponent<Image>().color = newColor;
-        }
     }
 
     private bool IsAllSame()

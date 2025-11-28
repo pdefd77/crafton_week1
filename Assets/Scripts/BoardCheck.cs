@@ -35,6 +35,9 @@ public class BoardCheck : MonoBehaviour
     [Tooltip("전체 바운스 연출에 적용할 이징 함수")]
     [SerializeField] private Ease bounceEase = Ease.InOutQuad;
 
+    [SerializeField] private GameObject tilePiecePref;
+    [SerializeField] private Canvas gameCanvas;
+
 
     private void Awake()
     {
@@ -358,7 +361,20 @@ public class BoardCheck : MonoBehaviour
         adj[y, x] = 0;
         if(boardSlot[5 * y + x - 6].transform.childCount > 0)
         {
-            boardSlot[5 * y + x - 6].transform.GetChild(0).GetComponent<TileDestroy>().StartBreak();
+            TileDraggable targetTile = boardSlot[5 * y + x - 6].transform.GetChild(0).GetComponent<TileDraggable>();
+
+            for (int i = 0; i < 9; i++)
+            {
+                // 부서진 타일 조각 생성
+                GameObject newTilePiece = Instantiate(tilePiecePref, targetTile.transform.position, Quaternion.identity, gameCanvas.transform);
+                DestroyedTile tilePiece = newTilePiece.GetComponent<DestroyedTile>();
+
+                if (i % 3 == 0) tilePiece.StartDestroyEffect(0);
+                else tilePiece.StartDestroyEffect(targetTile.TileType);
+            }
+
+            // 타일 제거
+            Destroy(targetTile.gameObject);
         }
     }
 }
